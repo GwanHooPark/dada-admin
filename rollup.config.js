@@ -1,21 +1,24 @@
-/**
- * @license
- * Copyright 2018 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
 import summary from 'rollup-plugin-summary';
 import { terser } from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import pkg from "./package.json";
+const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
 export default {
-    input: 'my-element.js',
-    output: {
-        file: 'my-element.bundled.js',
-        format: 'esm',
-    },
+    input: './src/my-element.ts',
+    output: [
+        {
+            sourcemap: true,
+            file: pkg.main,
+            format: "cjs",
+        },
+        {
+            sourcemap: true,
+            file: pkg.module,
+            format: "esm",
+        },
+    ],
     onwarn(warning) {
         if (warning.code !== 'THIS_IS_UNDEFINED') {
             console.error(`(!) ${warning.message}`);
@@ -23,7 +26,7 @@ export default {
     },
     plugins: [
         replace({ 'Reflect.decorate': 'undefined' }),
-        resolve(),
+        resolve({ extensions }),
         terser({
             ecma: 2017,
             module: true,

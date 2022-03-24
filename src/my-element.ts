@@ -2,7 +2,7 @@ import { LitElement, html, css, customElement, property } from 'lit-element';
 //import {customElement, property} from 'lit/decorators.js';
 
 @customElement('my-element')
-export class MyElement extends LitElement {
+export default class MyElement extends LitElement {
     static override styles = css`
         :host {
             display: block;
